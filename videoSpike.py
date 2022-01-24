@@ -9,6 +9,10 @@ if (not vidCap.isOpened()):  # statement to ensure camera is working
     print("Error: Could not open camera, now exiting")
     exit()
 
+yellow = np.uint8([[[0,255,255]]])
+hsv_yellow = cv.cvtColor(yellow,cv.COLOR_BGR2HSV)
+print(hsv_yellow)
+
 while True:  # keep going until program is killed
     # does a frame by frame capture into frame variable and if frame is read in corectly into frameTest boolean
     frameTest, frame = vidCap.read()
@@ -22,10 +26,10 @@ while True:  # keep going until program is killed
 
     vibrantDisplay = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
-    lowerBoundYellow = np.array([0,255,255])
-    upperBoundYellow = np.array([100,255,255])
+    lowerBoundYellow = np.array([10,100,100])
+    upperBoundYellow = np.array([35,255,255])
 
-    lower_blue = np.array([110,50,50])
+    lower_blue = np.array([110,100,100])
     upper_blue = np.array([130,255,255])
 
     colorMask = cv.inRange(vibrantDisplay, lowerBoundYellow, upperBoundYellow) # gets all colors in range
@@ -41,7 +45,7 @@ while True:  # keep going until program is killed
     #print(frame.dtype)
 
     # Displays video in openCV GUI
-    #cv.imshow('TitleExample', frame)  # frame for standard video input, use display variable for modified version
+    cv.imshow('TitleExample', frame)  # frame for standard video input, use display variable for modified version
     #if cv.waitKey(1) == ord('q'):  # Not sure what this line does, I think it might just be a quit key
         # turns out the wait key IS ABSOLUTELY NEEDED becuase you can't use the x button to quit.
     #    break
@@ -53,7 +57,10 @@ while True:  # keep going until program is killed
     #cv.imshow('Please don\'t openCV. Part 2', maskedImage)
     #cv.imshow('Please don\'t openCV. Part 3', colorMask)
     #cv.imshow('Come on openCV', mask2)
-    cv.imshow('Come on openCV 2', maskedImage2)
+    
+    #cv.imshow('Light blue works very well', maskedImage2)
+    cv.imshow('Big Yellow time', maskedImage)
+    cv.imshow('Yellow but not', colorMask)
 
 
 
