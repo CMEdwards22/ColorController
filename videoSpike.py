@@ -17,11 +17,14 @@ while True:  # keep going until program is killed
         print("Error: Frame not read in correctly, now stopping program")
         break
 
-    # Grayscales video
+    # Grayscales video, only use if need converting
     display = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
+    # Constantly prints the type of each frame, is uint8
+    #print(frame.dtype)
+
     # Displays video in openCV GUI
-    cv.imshow('frame', display)
+    cv.imshow('TitleExample', frame)  # frame for standard video input, use display variable for modified version
     if cv.waitKey(1) == ord('q'):  # Not sure what this line does, I think it might just be a quit key
         # turns out the wait key IS ABSOLUTELY NEEDED becuase you can't use the x button to quit.
         break
