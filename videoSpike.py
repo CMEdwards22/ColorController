@@ -20,14 +20,47 @@ while True:  # keep going until program is killed
     # Grayscales video, only use if need converting
     display = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
+    vibrantDisplay = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+
+    lowerBoundYellow = np.array([0,255,255])
+    upperBoundYellow = np.array([100,255,255])
+
+    lower_blue = np.array([110,50,50])
+    upper_blue = np.array([130,255,255])
+
+    colorMask = cv.inRange(vibrantDisplay, lowerBoundYellow, upperBoundYellow) # gets all colors in range
+    mask2 = cv.inRange(vibrantDisplay, lower_blue, upper_blue)
+
+    maskedImage = cv.bitwise_and(frame, frame, mask= colorMask)
+    maskedImage2 = cv.bitwise_and(frame, frame, mask= mask2)
+
+
+
+
     # Constantly prints the type of each frame, is uint8
     #print(frame.dtype)
 
     # Displays video in openCV GUI
-    cv.imshow('TitleExample', frame)  # frame for standard video input, use display variable for modified version
-    if cv.waitKey(1) == ord('q'):  # Not sure what this line does, I think it might just be a quit key
+    #cv.imshow('TitleExample', frame)  # frame for standard video input, use display variable for modified version
+    #if cv.waitKey(1) == ord('q'):  # Not sure what this line does, I think it might just be a quit key
         # turns out the wait key IS ABSOLUTELY NEEDED becuase you can't use the x button to quit.
+    #    break
+
+    # Displays video in openCV GUI
+    #cv.imshow('Vibrant Display', vibrantDisplay)  
+
+    #cv.imshow('Please don\'t openCV. Please', colorMask)
+    #cv.imshow('Please don\'t openCV. Part 2', maskedImage)
+    #cv.imshow('Please don\'t openCV. Part 3', colorMask)
+    #cv.imshow('Come on openCV', mask2)
+    cv.imshow('Come on openCV 2', maskedImage2)
+
+
+
+    if cv.waitKey(1) == ord('q'):  
         break
+
+
 
 # Simple end of program stuff to prevent memory leaks
 vidCap.release()
