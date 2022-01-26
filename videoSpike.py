@@ -13,6 +13,10 @@ yellow = np.uint8([[[0,255,255]]])
 hsv_yellow = cv.cvtColor(yellow,cv.COLOR_BGR2HSV)
 print(hsv_yellow)
 
+red = np.uint8([[[0,0,255]]])
+hsv_red = cv.cvtColor(red,cv.COLOR_BGR2HSV)
+print("red: ", hsv_red)
+
 while True:  # keep going until program is killed
     # does a frame by frame capture into frame variable and if frame is read in corectly into frameTest boolean
     frameTest, frame = vidCap.read()
@@ -32,13 +36,23 @@ while True:  # keep going until program is killed
     lower_blue = np.array([110,100,100])
     upper_blue = np.array([130,255,255])
 
+    lower_red = np.array([0,100,100])
+    upper_red = np.array([5,255,255])
+
     colorMask = cv.inRange(vibrantDisplay, lowerBoundYellow, upperBoundYellow) # gets all colors in range
     mask2 = cv.inRange(vibrantDisplay, lower_blue, upper_blue)
 
     maskedImage = cv.bitwise_and(frame, frame, mask= colorMask)
     maskedImage2 = cv.bitwise_and(frame, frame, mask= mask2)
 
+    redMask = cv.inRange(vibrantDisplay, lower_red, upper_red)
+    imageRedMasked = cv.bitwise_and(frame, frame, mask= redMask)
 
+
+    # Morphological Transformation test
+    kernel = np.ones((7,7), np.uint8) # just like in the ai class
+    opening = cv.morphologyEx(redMask, cv.MORPH_OPEN, kernel)
+    cv.imshow("Morphological Transformation on Red Mask", opening)
 
 
     # Constantly prints the type of each frame, is uint8
@@ -59,10 +73,11 @@ while True:  # keep going until program is killed
     #cv.imshow('Come on openCV', mask2)
     
     #cv.imshow('Light blue works very well', maskedImage2)
-    cv.imshow('Big Yellow time', maskedImage)
-    cv.imshow('Yellow but not', colorMask)
+    #cv.imshow('Big Yellow time', maskedImage)
+    #cv.imshow('Yellow but not', colorMask)
 
-
+    cv.imshow("red is easy color made for children", redMask)
+    #cv.imshow("Its the mask but redder than before", imageRedMasked)
 
     if cv.waitKey(1) == ord('q'):  
         break
