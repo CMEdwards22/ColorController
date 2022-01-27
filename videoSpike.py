@@ -54,6 +54,9 @@ while True:  # keep going until program is killed
     opening = cv.morphologyEx(redMask, cv.MORPH_OPEN, kernel)
     cv.imshow("Morphological Transformation on Red Mask", opening)
 
+    miRedMasked = cv.bitwise_and(frame, frame, mask= opening)
+    cv.imshow("Red is easy color made for children", miRedMasked)
+
 
     # Constantly prints the type of each frame, is uint8
     #print(frame.dtype)
@@ -76,7 +79,7 @@ while True:  # keep going until program is killed
     #cv.imshow('Big Yellow time', maskedImage)
     #cv.imshow('Yellow but not', colorMask)
 
-    cv.imshow("red is easy color made for children", redMask)
+    #cv.imshow("red is easy color made for children", redMask)
     #cv.imshow("Its the mask but redder than before", imageRedMasked)
 
     if cv.waitKey(1) == ord('q'):  
