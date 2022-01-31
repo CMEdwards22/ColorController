@@ -24,13 +24,24 @@ def main2():
 
 
 
-def main():
+def main3():
     vidCap = vc.getVideoCapture()
     while True:
         frame = vc.hsvFrame(vidCap)
         mask = cm.getMask(frame, 255, 0, 0)
         cv.imshow("title", frame)
         cv.imshow("Please work", mask)
+        if cv.waitKey(1) == ord('q'):  
+            break
+
+def main():
+    vidCap = vc.getVideoCapture()
+    while True:
+        frame = vc.hsvFrame(vidCap)
+        hsv = cm.rgb2hsv(255,0,0)
+        hsvR = cm.colorRange(hsv)
+        mask = cm.buildMask(frame, hsvR, mtKernel= 3)
+        cv.imshow("buildMaskTest", mask)
         if cv.waitKey(1) == ord('q'):  
             break
 

@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-# File to comiple all colormasking into on location
+# File to comiple all colormasking functions into one location
 
 # function to convert rgb to useable hsv color for masks
 def rgb2hsv(red, green, blue):
@@ -27,6 +27,8 @@ def findBounds(value, offset):
     return [lowerbound, upperbound]
 
 
+# Color Range takes in an hsv color and an optional offset for hue, saturation, and value
+# and returns a 2 element array with lowerbound and upperbound
 def colorRange(hsv, hOffset = 10, sOffset = 150, vOffset = 150):
     h_val = hsv[0][0][0]
     s_val = hsv[0][0][1]
@@ -41,6 +43,9 @@ def colorRange(hsv, hOffset = 10, sOffset = 150, vOffset = 150):
 
     return [lowerbound, upperbound]
     
+# BuildMask can be used individually but is called by getMask. Takes in the frame, the hsv range,
+# and optinal whether or not you want morphalogical tranformation, and the morphalogical tranformation kernel size
+# returns the mask
 def buildMask(frame, hsvRange, mt = True, mtKernel = 7):
     lowerbound = np.array(hsvRange[0])
     upperbound = np.array(hsvRange[1])
@@ -50,6 +55,8 @@ def buildMask(frame, hsvRange, mt = True, mtKernel = 7):
         colorMask = cv.morphologyEx(colorMask, cv.MORPH_OPEN, kernel)
     return colorMask
 
+# getMask combines all steps of building the mask, only requires and hsv frame and rgb values.
+# Takes in an optional offsets for h, s, and v along with the mt and kernal option for buildMask 
 def getMask(frame, red, green, blue, hOffset = 10, sOffset = 150, vOffset = 150, mt = True, mtKernel = 7):
     color = rgb2hsv(red, green, blue)
     cr = colorRange(color, hOffset, sOffset, vOffset)
