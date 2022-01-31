@@ -19,3 +19,11 @@ def getFrame(vidCap):
         print("Error: Frame not read in correctly, now stopping program")
         exit()
     return frame
+
+def frame2hsv(frame):
+    display = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+    return display
+
+def hsvFrame(vidCap):
+    frame = getFrame(vidCap)
+    return frame2hsv(frame)

@@ -11,14 +11,29 @@ def main1():
         if cv.waitKey(1) == ord('q'):  
             break
 
-def main():
+def main2():
     color = cm.rgb2hsv(255,0,0) #test on red
     print("Color: ", color)
     print("Color[0]: ", color[0])
     print("Color[0][0]: ", color[0][0])
     print("Color[0][0][0]: ", color[0][0][0])
-    cr = cm.colorRange(color, 10, 100, 100)
+    cr = cm.colorRange(color, 50, 150, 150)
+    cr2 = cm.colorRange(color)
     print("cr: ", cr)
+    print("cr2: ", cr2)
+
+
+
+def main():
+    vidCap = vc.getVideoCapture()
+    while True:
+        frame = vc.hsvFrame(vidCap)
+        mask = cm.getMask(frame, 255, 0, 0)
+        cv.imshow("title", frame)
+        cv.imshow("Please work", mask)
+        if cv.waitKey(1) == ord('q'):  
+            break
+
 
 
 
