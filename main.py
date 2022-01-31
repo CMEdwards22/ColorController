@@ -1,14 +1,11 @@
-import newVideoCapture
+import newVideoCapture as vc
 import cv2 as cv
 
 def main():
     print("Test main")
-    vidCap = newVideoCapture.getVideoCapture()
+    vidCap = vc.getVideoCapture() #includes error checking
     while True:
-        frameTest, frame = vidCap.read()
-        if (not frameTest):  # Another statement to ensure that the frames are working
-            print("Error: Frame not read in correctly, now stopping program")
-            break
+        frame = vc.getFrame(vidCap)
         cv.imshow('TitleExample', frame)
         if cv.waitKey(1) == ord('q'):  
             break
