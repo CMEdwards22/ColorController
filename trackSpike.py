@@ -10,7 +10,7 @@ while True:
     frame2 = vc.getFrame(vidCap)
     hsv = cm.rgb2hsv(255,0,0)
     hsvR = cm.colorRange(hsv)
-    mask = cm.buildMask(frame, hsvR, mtKernel= 7)
+    mask = cm.buildMask(frame, hsvR, itera= 9)
 
     p_img = 255 - mask
     maskImg = cv.bitwise_and(frame, frame, mask = mask)

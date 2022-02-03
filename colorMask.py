@@ -46,7 +46,7 @@ def colorRange(hsv, hOffset = 10, sOffset = 150, vOffset = 150):
 # BuildMask can be used individually but is called by getMask. Takes in the frame, the hsv range,
 # and optinal whether or not you want morphalogical tranformation, and the morphalogical tranformation kernel size
 # returns the mask
-def buildMask(frame, hsvRange, mt = True, mtKernel = 7):
+def buildMask(frame, hsvRange, mt = True, mtKernel = 7, itera = 1):
     lowerbound = np.array(hsvRange[0])
     upperbound = np.array(hsvRange[1])
     colorMask = cv.inRange(frame, lowerbound, upperbound)
@@ -54,6 +54,8 @@ def buildMask(frame, hsvRange, mt = True, mtKernel = 7):
         kernel = np.ones((mtKernel, mtKernel), np.uint8)
         colorMask = cv.morphologyEx(colorMask, cv.MORPH_CLOSE, kernel)
         colorMask = cv.morphologyEx(colorMask, cv.MORPH_OPEN, kernel)
+        colorMask = cv.erode(colorMask, kernel, iterations= itera)
+        colorMask = cv.dilate(colorMask, kernel, iterations= itera)
     return colorMask
 
 # getMask combines all steps of building the mask, only requires and hsv frame and rgb values.
