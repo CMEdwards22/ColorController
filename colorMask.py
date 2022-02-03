@@ -52,6 +52,7 @@ def buildMask(frame, hsvRange, mt = True, mtKernel = 7):
     colorMask = cv.inRange(frame, lowerbound, upperbound)
     if mt:
         kernel = np.ones((mtKernel, mtKernel), np.uint8)
+        colorMask = cv.morphologyEx(colorMask, cv.MORPH_CLOSE, kernel)
         colorMask = cv.morphologyEx(colorMask, cv.MORPH_OPEN, kernel)
     return colorMask
 
