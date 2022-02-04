@@ -21,10 +21,10 @@ while True:
     blobDetectorParams = cv.SimpleBlobDetector_Params()
 
     blobDetectorParams.minThreshold = 0
-    blobDetectorParams.maxThreshold = 100
+    blobDetectorParams.maxThreshold = 255
     blobDetectorParams.filterByArea = True
-    blobDetectorParams.minArea = 500
-    blobDetectorParams.maxArea = 3000
+    blobDetectorParams.minArea = 250
+    blobDetectorParams.maxArea = 10000
     blobDetectorParams.filterByConvexity = False
     blobDetectorParams.minConvexity = 0.5
     blobDetectorParams.filterByInertia = False
@@ -39,6 +39,7 @@ while True:
     print("Blob count: ", blobCount)
     #img = cv.drawKeypoints(img, keyPoints, np.array([]), (255, 0, 0), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
+    # have the prints as optional debug feature in method
     if blobCount > 0:
         # Write X position of first blob
         blob_x = keyPoints[0].pt[0]
