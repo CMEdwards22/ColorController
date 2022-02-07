@@ -26,9 +26,9 @@ while True:
     blobDetectorParams.minArea = 250
     blobDetectorParams.maxArea = 10000
     blobDetectorParams.filterByConvexity = False
-    blobDetectorParams.minConvexity = 0.5
+    #blobDetectorParams.minConvexity = 0.5
     blobDetectorParams.filterByInertia = False
-    blobDetectorParams.minInertiaRatio = 0.5
+    #blobDetectorParams.minInertiaRatio = 0.5
 
     blobDetector = cv.SimpleBlobDetector_create(blobDetectorParams)
 
