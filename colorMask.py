@@ -5,6 +5,16 @@ import numpy as np
 
 # function to convert rgb to useable hsv color for masks
 def rgb2hsv(red, green, blue):
+    """Function to convert rgb to useable hsv color for masks
+
+    Args:
+        red (int): red value
+        green (int): green value
+        blue (int): blue value
+
+    Returns:
+        np.uint8: matrix with convert hsv values
+    """
     color = np.uint8([[[blue, green, red]]]) #puts into BGR
     hsv_color = cv.cvtColor(color, cv.COLOR_BGR2HSV)
     return hsv_color

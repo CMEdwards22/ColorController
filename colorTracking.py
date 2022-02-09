@@ -1,5 +1,6 @@
 import cv2 as cv
 
+
 # Builds a simple set of parameters for blob detection
 def buildSimpleParams(min_area, max_area):
     blobDetectorParams = cv.SimpleBlobDetector_Params()

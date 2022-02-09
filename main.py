@@ -1,6 +1,8 @@
+from pyrsistent import v
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
+import colorTracking as ct
 
 def main1():
     print("Test main")
@@ -34,7 +36,7 @@ def main3():
         if cv.waitKey(1) == ord('q'):  
             break
 
-def main():
+def main4():
     vidCap = vc.getVideoCapture()
     while True:
         frame = vc.hsvFrame(vidCap)
@@ -44,6 +46,12 @@ def main():
         cv.imshow("buildMaskTest", mask)
         if cv.waitKey(1) == ord('q'):  
             break
+
+def main():
+    vidCap = vc.getVideoCapture()
+    while True:
+        hsvFrame = vc.hsvFrame(vidCap)
+        frame = vc.getFrame(vidCap)
 
 
 
