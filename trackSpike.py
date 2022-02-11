@@ -11,6 +11,7 @@ while True:
     hsv = cm.rgb2hsv(255,0,0)
     hsvR = cm.colorRange(hsv)
     mask = cm.buildMask(frame, hsvR, itera= 9)
+    print(type(mask))
 
     p_img = 255 - mask
     maskImg = cv.bitwise_and(frame, frame, mask = mask)
@@ -19,6 +20,7 @@ while True:
     output = cv.drawContours(mask, tracker, -1, (255, 0, 0), 3)
 
     blobDetectorParams = cv.SimpleBlobDetector_Params()
+    print("paramType: ", type(blobDetectorParams))
 
     blobDetectorParams.minThreshold = 0
     blobDetectorParams.maxThreshold = 255
@@ -28,13 +30,14 @@ while True:
     blobDetectorParams.filterByConvexity = False
     #blobDetectorParams.minConvexity = 0.5
     blobDetectorParams.filterByInertia = False
-    #blobDetectorParams.minInertiaRatio = 0.5
+    blobDetectorParams.minInertiaRatio = 0.5
 
     blobDetector = cv.SimpleBlobDetector_create(blobDetectorParams)
 
     invertMask = 255 - mask
 
     keyPoints = blobDetector.detect(invertMask)
+    print("keypointsType: ", type(keyPoints))
     blobCount = len(keyPoints)
     print("Blob count: ", blobCount)
     #img = cv.drawKeypoints(img, keyPoints, np.array([]), (255, 0, 0), cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)

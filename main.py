@@ -1,3 +1,4 @@
+from matplotlib.pyplot import hsv
 from pyrsistent import v
 import newVideoCapture as vc
 import colorMask as cm
@@ -52,6 +53,11 @@ def main():
     while True:
         hsvFrame = vc.hsvFrame(vidCap)
         frame = vc.getFrame(vidCap)
+        mask = cm.getMask(hsvFrame, 255, 0, 0)
+        x,y,size = ct.buildBlobTracker(frame, mask, 50, 1000) 
+        print("x : ", x)
+        print("y : ", y)
+        print("size : ", size)
 
 
 

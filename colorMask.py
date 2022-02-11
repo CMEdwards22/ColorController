@@ -22,6 +22,15 @@ def rgb2hsv(red, green, blue):
 
 # helper function for colorRange
 def findBounds(value, offset):
+    """Helper Function to calculate bounds for a specific value
+
+    Args:
+        value (int): The starting value to create range from
+        offset (int): Value to offset by in both directions
+
+    Returns:
+        list[int, int]: returns 2 length list of ints with upper and lower bounds in list[0] and list[1] respectivly
+    """
     # for lower bound
     if (value - offset) < 0:
         lowerbound = 0
@@ -40,6 +49,17 @@ def findBounds(value, offset):
 # Color Range takes in an hsv color and an optional offset for hue, saturation, and value
 # and returns a 2 element array with lowerbound and upperbound
 def colorRange(hsv, hOffset = 10, sOffset = 150, vOffset = 150):
+    """Finds color range for given hsv value
+
+    Args:
+        hsv (list[int]): list with HSV values
+        hOffset (int, optional): Amount to offset hue by. Defaults to 10.
+        sOffset (int, optional): Amount to offset saturation by. Defaults to 150.
+        vOffset (int, optional): Amount to offset value by. Defaults to 150.
+
+    Returns:
+        list[List[int]: returns list of lists containing upper and lower bound for h, s, and v
+    """
     h_val = hsv[0][0][0]
     s_val = hsv[0][0][1]
     v_val = hsv[0][0][2]
@@ -57,6 +77,18 @@ def colorRange(hsv, hOffset = 10, sOffset = 150, vOffset = 150):
 # and optinal whether or not you want morphalogical tranformation, and the morphalogical tranformation kernel size
 # returns the mask
 def buildMask(frame, hsvRange, mt = True, mtKernel = 7, itera = 1):
+    """Builds a mask given a frame and hsvRange
+
+    Args:
+        frame (numpy.ndarray): HSV frame to build mask off of
+        hsvRange (list): detection range for hsv values to mask
+        mt (bool, optional): Whether or not to apply morphological transformation. Defaults to True.
+        mtKernel (int, optional): Kernel Size to apply in mt, needs mt to be true to use. Defaults to 7.
+        itera (int, optional): Number of times to run mt. Defaults to 1.
+
+    Returns:
+        numpy.ndarray: returns color mask based on given frame
+    """
     lowerbound = np.array(hsvRange[0])
     upperbound = np.array(hsvRange[1])
     colorMask = cv.inRange(frame, lowerbound, upperbound)
@@ -71,6 +103,22 @@ def buildMask(frame, hsvRange, mt = True, mtKernel = 7, itera = 1):
 # getMask combines all steps of building the mask, only requires and hsv frame and rgb values.
 # Takes in an optional offsets for h, s, and v along with the mt and kernal option for buildMask 
 def getMask(frame, red, green, blue, hOffset = 10, sOffset = 150, vOffset = 150, mt = True, mtKernel = 7):
+    """All-in-one function for building a color mask
+
+    Args:
+        frame (numpy.ndarray): HSV Frame to build mask off of
+        red (int): red color value
+        green (int): green color value
+        blue (int): blue color value
+        hOffset (int, optional): Amount to offset hue by. Defaults to 10.
+        sOffset (int, optional): Amount to offset saturation by. Defaults to 150.
+        vOffset (int, optional): Amount to offset value by. Defaults to 150.
+        mt (bool, optional): Whether or not to apply morphological transformations. Defaults to True.
+        mtKernel (int, optional): Kernel Size to apply in mt, needs mt to be true to use. Defaults to 7.
+
+    Returns:
+        numpy.ndarray: returns color mask based on given frame
+    """
     color = rgb2hsv(red, green, blue)
     cr = colorRange(color, hOffset, sOffset, vOffset)
     mask = buildMask(frame, cr, mt, mtKernel)
