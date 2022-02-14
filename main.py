@@ -1,5 +1,5 @@
+from cv2 import imshow
 from matplotlib.pyplot import hsv
-from pyrsistent import v
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
@@ -53,11 +53,19 @@ def main():
     while True:
         hsvFrame = vc.hsvFrame(vidCap)
         frame = vc.getFrame(vidCap)
-        mask = cm.getMask(hsvFrame, 255, 0, 0)
-        x,y,size = ct.buildBlobTracker(frame, mask, 50, 1000) 
-        print("x : ", x)
-        print("y : ", y)
-        print("size : ", size)
+        mask = cm.getMask(hsvFrame, 255, 0, 0, itera=6)
+        x,y,size,blobCount = ct.buildBlobTracker(frame, mask, 0, 30000) 
+        cv.imshow("Frame with Color Tracking", frame)
+        cv.imshow("Red Color Mask", mask)
+        if blobCount > 0:
+            print("Total blob count: ", blobCount)
+            print("x : ", x)
+            print("y : ", y)
+            print("size : ", size)
+        else:
+            print("No blobs detected")
+        if cv.waitKey(1) == ord('q'):  
+            break
 
 
 

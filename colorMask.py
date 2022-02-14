@@ -102,7 +102,7 @@ def buildMask(frame, hsvRange, mt = True, mtKernel = 7, itera = 1):
 
 # getMask combines all steps of building the mask, only requires and hsv frame and rgb values.
 # Takes in an optional offsets for h, s, and v along with the mt and kernal option for buildMask 
-def getMask(frame, red, green, blue, hOffset = 10, sOffset = 150, vOffset = 150, mt = True, mtKernel = 7):
+def getMask(frame, red, green, blue, hOffset = 10, sOffset = 150, vOffset = 150, mt = True, mtKernel = 7, itera = 1):
     """All-in-one function for building a color mask
 
     Args:
@@ -115,11 +115,12 @@ def getMask(frame, red, green, blue, hOffset = 10, sOffset = 150, vOffset = 150,
         vOffset (int, optional): Amount to offset value by. Defaults to 150.
         mt (bool, optional): Whether or not to apply morphological transformations. Defaults to True.
         mtKernel (int, optional): Kernel Size to apply in mt, needs mt to be true to use. Defaults to 7.
+        itera (int, optional): Number of times to run mt. Defaults to 1.
 
     Returns:
         numpy.ndarray: returns color mask based on given frame
     """
     color = rgb2hsv(red, green, blue)
     cr = colorRange(color, hOffset, sOffset, vOffset)
-    mask = buildMask(frame, cr, mt, mtKernel)
+    mask = buildMask(frame, cr, mt, mtKernel, itera)
     return mask

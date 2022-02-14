@@ -92,10 +92,12 @@ def simpleBlobTracker(keypoints, frame, debugMode= False, circle_red= 0, circle_
             print(yText)
             print(sText)
     else:
-        x,y,size = None
+        x = -1
+        y = -1
+        size = -1
         if debugMode:
             print("No blobs detected")
-    return x,y,size
+    return x, y, size, BlobCount
 
 
 # Warning: could run very slow when used
@@ -164,8 +166,8 @@ def buildBlobTracker(frame, mask, minArea, maxArea, simple=True, debugMode= Fals
     params = buildSimpleParams(minArea, maxArea)
     keypoints = getKeyPoints(mask, params)
     if simple:
-        x,y,size = simpleBlobTracker(keypoints, frame, debugMode, circle_red, circle_green, circle_blue)
-        return x,y,size
+        x,y,size,blobCount = simpleBlobTracker(keypoints, frame, debugMode, circle_red, circle_green, circle_blue)
+        return x,y,size,blobCount
     else:
         data = multiBlobTracker(keypoints, frame, debugMode, circle_red, circle_green, circle_blue)
-        return data
+        return data, 0, 0
