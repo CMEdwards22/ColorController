@@ -58,6 +58,7 @@ def main():
         cv.imshow("Frame with Color Tracking", frame)
         cv.imshow("Red Color Mask", mask)
         if blobCount > 0:
+            print("\n")
             print("Total blob count: ", blobCount)
             print("x : ", x)
             print("y : ", y)
