@@ -71,19 +71,45 @@ ytest = np.arange(1000)
 
 params = cu.colorTrackingParams()
 
-params.showTracker = False
+def testChange(param):
+    param.showTracker = False
+    param.minArea = 100
+
+#params.showTracker = False
+
+testChange(params)
+
 print(params.showTracker)
 print(params.blue)
+print(params.minArea)
 
-counter = 0
-y = 200
+
+
+def testImshow(frame):
+    cv.imshow("title", frame)
+
+vidCap = vc.getVideoCapture()
+#frame = vc.getFrame(vidCap)
+
 while True:
-    #drawing.create_oval((xtest[counter] - 5, y - 5, xtest[counter] + 5, y + 5, outline="", fill="red")
-    drawing.create_oval(xtest[counter] - 15, 200, xtest[counter] - 15, 200, fill="red", outline="")
-    counter += 1
-    root.update()
-    if cv.waitKey(1) == ord('q'):
-        break
+    #cv.imshow("title", params.getFrame())
+    frame = params.getFrame()
+    cv.imshow("title", frame)
+    print("test")
+    if cv.waitKey(1) == ord('q'):  
+            break
 
 cv.destroyAllWindows()
-root.destroy()
+
+
+#y = 200
+#while True:
+#    #drawing.create_oval((xtest[counter] - 5, y - 5, xtest[counter] + 5, y + 5, outline="", fill="red")
+#    drawing.create_oval(xtest[counter] - 15, 200, xtest[counter] - 15, 200, fill="red", outline="")
+#    counter += 1
+#    root.update()
+#    if cv.waitKey(1) == ord('q'):
+#        break
+
+#cv.destroyAllWindows()
+#root.destroy()
