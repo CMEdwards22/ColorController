@@ -4,9 +4,6 @@ import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
 
-# They do: vid cap
-# I do:
-# hsvframe, frame, mask, blob tracker, shows
 
 class colorTrackingParams:
     """Class to store all parameters needed to run tracker.
@@ -30,7 +27,9 @@ class colorTrackingParams:
     circle_green (int): green RGB/BGR color value for drawn circle. Defaults to 0.
     circle_blue (int): blue RGB/BGR color value for drawn circle. Defaults to 255.
     showTracker (bool): if the frame and tracker should be shown. Defaults to True.
-    showMask (bool): if the color mask should be shown. Defaults to False
+    showMask (bool): if the color mask should be shown. Defaults to False.
+    trackerTitle (String): the title name of the color tracker window
+    maskTitle (String): the title of the name of the color mask window
     """
     def __init__(self):
         self.vidCap = vc.getVideoCapture()
@@ -44,7 +43,7 @@ class colorTrackingParams:
         self.mtKernel = 7
         self.itera = 1
         self.minArea = 0
-        self.maxArea = 0
+        self.maxArea = 100
         self.simple = True
         self.debugMode = False
         self.circle_red = 0
@@ -52,3 +51,18 @@ class colorTrackingParams:
         self.circle_blue = 255
         self.showTracker = True
         self.showMask = False
+        self.trackerTitle = "Tracker"
+        self.maskTitle = "Mask"
+    
+
+
+def update(params):
+    hsvFrame = vc.hsvFrame(params.vidCap)
+    frame = vc.getFrame(params.vidCap)
+    mask = cm.getMask(hsvFrame, params.red, params.green, params.blue, hOffset=params.hOffset, sOffset=params.sOffset, vOffset=params.vOffset, mt= params.mt, mtKernel= params.mtKernel, itera= params.itera)
+    x,y,size,blobCount = ct.buildBlobTracker(frame, mask, params.minArea, params.maxArea, simple= params.simple, debugMode= params.debugMode, circle_red= params.circle_red, circle_green= params.circle_green, circle_blue= params.circle_blue)
+    if params.showTracker:
+        cv.imshow(params.trackerTitle, frame)
+    if params.showMask:
+        cv.imshow(params.maskTitle, mask)
+    return x,y,size,blobCount

@@ -3,6 +3,7 @@ import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
+import colorUpdate as cu
 
 def main1():
     print("Test main")
@@ -47,7 +48,7 @@ def main4():
         if cv.waitKey(1) == ord('q'):  
             break
 
-def main():
+def main5():
     vidCap = vc.getVideoCapture()
     while True:
         hsvFrame = vc.hsvFrame(vidCap)
@@ -66,6 +67,27 @@ def main():
             print("No blobs detected")
         if cv.waitKey(1) == ord('q'):  
             break
+
+def main():
+    params = cu.colorTrackingParams()
+    params.showMask = False
+    params.maxArea = 30000
+    params.itera = 6
+    params.trackerTitle = "Test tracker title"
+    params.maskTitle = "Test mask title"
+    while True:
+        x, y, size, blobCount = cu.update(params)
+        if blobCount > 0:
+            print("\n")
+            print("Total blob count: ", blobCount)
+            print("x : ", x)
+            print("y : ", y)
+            print("size : ", size)
+        else:
+            print("No blobs detected")
+        if cv.waitKey(1) == ord('q'):  
+            break
+    
 
 
 
