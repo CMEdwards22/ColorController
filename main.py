@@ -1,5 +1,4 @@
 from cv2 import imshow
-from matplotlib.pyplot import hsv
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv

@@ -5,6 +5,7 @@ import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
+import colorUpdate as cu
 
 # Root is like foundation for standard GUI, need Canvas for drawing and such
 root = tk.Tk()
@@ -68,6 +69,11 @@ ytest = np.arange(1000)
 
 #print(type(xtest[1]))
 
+params = cu.colorTrackingParams()
+
+params.showTracker = False
+print(params.showTracker)
+print(params.blue)
 
 counter = 0
 y = 200
