@@ -1,9 +1,10 @@
 from cv2 import imshow
-from matplotlib.pyplot import hsv
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
+import colorUpdate as cu
+import tkinter as tk
 
 def main1():
     print("Test main")
@@ -48,7 +49,7 @@ def main4():
         if cv.waitKey(1) == ord('q'):  
             break
 
-def main():
+def main5():
     vidCap = vc.getVideoCapture()
     while True:
         hsvFrame = vc.hsvFrame(vidCap)
@@ -68,8 +69,81 @@ def main():
         if cv.waitKey(1) == ord('q'):  
             break
 
+def main6():
+    params = cu.colorTrackingParams()
+    params.showMask = False
+    params.maxArea = 30000
+    params.itera = 6
+    params.trackerTitle = "Test tracker title"
+    params.maskTitle = "Test mask title"
+    while True:
+        x, y, size, blobCount = cu.update(params)
+        if blobCount > 0:
+            print("\n")
+            print("Total blob count: ", blobCount)
+            print("x : ", x)
+            print("y : ", y)
+            print("size : ", size)
+        else:
+            print("No blobs detected")
+        if cv.waitKey(1) == ord('q'):  
+            break
+    
+def main7broke():
+    params = cu.colorTrackingParams()
+    #params.showTracker = False
+    #params.itera = 6
+
+    # all gui stuff --
+    root = tk.Tk()
+    root.title("Red Color tracked GUI")
+    drawing = tk.Canvas(root, bg='white', height=720, width=1280)
+    drawing.pack()
+    # --
+    while True:
+        x,y,size,blobCount = cu.update(params)
+        if blobCount > 0:
+            # Used to draw oval into gui
+            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
+        # used to update gui
+        root.update()
+        if cv.waitKey(0) == ord('q'):
+            break
 
 
+#def quitAll():
+#    root.protocol('WM_DELETE_WINDOW', quitAll)
+
+def main():
+    def quitAll():
+        print("quitting all...")
+        root.destroy()
+        cu.destroy()
+    params = cu.colorTrackingParams()
+    params.itera = 6
+
+    root = tk.Tk()
+    root.protocol('WM_DELETE_WINDOW', quitAll)
+    root.title("Red color draw test")
+    drawing = tk.Canvas(root, bg='white', height=720, width= 1280)
+    drawing.pack()
+    while True:
+        #print("loop print test")
+        x,y,size,bc = cu.update(params)
+
+        if bc > 0:
+            print('test')
+            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
+        
+        root.update()
+        #if cv.waitKey(1) == ord('q'):
+        #    root.destroy()
+        #    break
+
+    
+
+
+cv.destroyAllWindows()
 
 
 
