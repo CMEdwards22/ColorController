@@ -66,3 +66,8 @@ def update(params):
     if params.showMask:
         cv.imshow(params.maskTitle, mask)
     return x,y,size,blobCount
+
+def destroy():
+    """Wrapper function to close all openCV windows
+    """
+    cv.destroyAllWindows()

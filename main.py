@@ -111,12 +111,19 @@ def main7broke():
             break
 
 
+#def quitAll():
+#    root.protocol('WM_DELETE_WINDOW', quitAll)
 
 def main():
+    def quitAll():
+        print("quitting all...")
+        root.destroy()
+        cu.destroy()
     params = cu.colorTrackingParams()
     params.itera = 6
 
     root = tk.Tk()
+    root.protocol('WM_DELETE_WINDOW', quitAll)
     root.title("Red color draw test")
     drawing = tk.Canvas(root, bg='white', height=720, width= 1280)
     drawing.pack()
@@ -129,9 +136,9 @@ def main():
             drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
         
         root.update()
-        if cv.waitKey(1) == ord('q'):
-            root.destroy()
-            break
+        #if cv.waitKey(1) == ord('q'):
+        #    root.destroy()
+        #    break
 
     
 
