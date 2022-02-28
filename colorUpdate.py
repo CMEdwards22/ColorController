@@ -30,6 +30,8 @@ class colorTrackingParams:
     showMask (bool): if the color mask should be shown. Defaults to False.
     trackerTitle (String): the title name of the color tracker window
     maskTitle (String): the title of the name of the color mask window
+    checkHooks (bool): if the update function should check for hooks or not. Defaults to True.
+    hooks (dict): a dict list of triggers set by setTrigger function. Do not change manually. Defaults to {}.
     """
     def __init__(self):
         self.vidCap = vc.getVideoCapture()
@@ -53,21 +55,67 @@ class colorTrackingParams:
         self.showMask = False
         self.trackerTitle = "Tracker"
         self.maskTitle = "Mask"
+        self.checkHooks = True
+        self.hooks = {}
     
+
+def setHook(params, x, y, function):
+    params.hooks[(x,y)] = function
+
+
+def removeHook(params, x, y):
+    del params.hooks[(x,y)]
+
+
+def setRangeHook(params, x1, y1, x2, y2, function):
+    for x in range (x1, x2):
+        for y in range(y1, y2):
+            params.hooks[(x,y)] = function
+
+
+def checkHooks(params, x, y):
+    hook = params.hooks.get((x,y))
+    if hook is not None:
+        hook()
 
 
 def update(params):
+    """Update function that updates all needed data which includes frames, masks, blobdetectors, and imshows.
+
+    Args:
+        params (_type_): Parameter class object containing all parameter settings for color tracker.
+
+    Returns:
+        x, y, size, blobCount: 4 ints with the first blob's x coord, y coord, size, and the total number of blobs
+    """
+    # Creates needed frames, hsv frames, and masks
     hsvFrame = vc.hsvFrame(params.vidCap)
     frame = vc.getFrame(params.vidCap)
     mask = cm.getMask(hsvFrame, params.red, params.green, params.blue, hOffset=params.hOffset, sOffset=params.sOffset, vOffset=params.vOffset, mt= params.mt, mtKernel= params.mtKernel, itera= params.itera)
+
+    # Builds tracker and gets the needed values
     x,y,size,blobCount = ct.buildBlobTracker(frame, mask, params.minArea, params.maxArea, simple= params.simple, debugMode= params.debugMode, circle_red= params.circle_red, circle_green= params.circle_green, circle_blue= params.circle_blue)
+
+    # checks if hooks are enable and if they should be triggered right now or not
+    if params.checkHooks:
+        if blobCount > 0:
+            intX = int(x)
+            intY = int(y)
+            checkHooks(params, intX, intY)
+
+    # Determines if tracker and mask should be shown or not
     if params.showTracker:
         cv.imshow(params.trackerTitle, frame)
     if params.showMask:
         cv.imshow(params.maskTitle, mask)
+
     return x,y,size,blobCount
+
 
 def destroy():
     """Wrapper function to close all openCV windows
     """
     cv.destroyAllWindows()
+
+
+    
