@@ -4,6 +4,7 @@ import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
 import colorUpdate as cu
+import tkinter as tk
 
 def main1():
     print("Test main")
@@ -68,7 +69,7 @@ def main5():
         if cv.waitKey(1) == ord('q'):  
             break
 
-def main():
+def main6():
     params = cu.colorTrackingParams()
     params.showMask = False
     params.maxArea = 30000
@@ -88,9 +89,54 @@ def main():
         if cv.waitKey(1) == ord('q'):  
             break
     
+def main7broke():
+    params = cu.colorTrackingParams()
+    #params.showTracker = False
+    #params.itera = 6
+
+    # all gui stuff --
+    root = tk.Tk()
+    root.title("Red Color tracked GUI")
+    drawing = tk.Canvas(root, bg='white', height=720, width=1280)
+    drawing.pack()
+    # --
+    while True:
+        x,y,size,blobCount = cu.update(params)
+        if blobCount > 0:
+            # Used to draw oval into gui
+            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
+        # used to update gui
+        root.update()
+        if cv.waitKey(0) == ord('q'):
+            break
 
 
 
+def main():
+    params = cu.colorTrackingParams()
+    params.itera = 6
+
+    root = tk.Tk()
+    root.title("Red color draw test")
+    drawing = tk.Canvas(root, bg='white', height=720, width= 1280)
+    drawing.pack()
+    while True:
+        #print("loop print test")
+        x,y,size,bc = cu.update(params)
+
+        if bc > 0:
+            print('test')
+            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
+        
+        root.update()
+        if cv.waitKey(1) == ord('q'):
+            root.destroy()
+            break
+
+    
+
+
+cv.destroyAllWindows()
 
 
 

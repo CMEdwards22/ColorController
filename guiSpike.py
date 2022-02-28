@@ -83,19 +83,31 @@ print(params.showTracker)
 print(params.blue)
 print(params.minArea)
 
+params.showTracker = True
 
 
-def testImshow(frame):
-    cv.imshow("title", frame)
 
-vidCap = vc.getVideoCapture()
+def testImshow(frame, params):
+    x = 5
+    if params.showTracker:
+        cv.imshow("title", frame)
+    print("midtest test")
+    return x
+
+#vidCap = vc.getVideoCapture()
 #frame = vc.getFrame(vidCap)
 
 while True:
     #cv.imshow("title", params.getFrame())
-    frame = params.getFrame()
-    cv.imshow("title", frame)
-    print("test")
+    #frame = params.getFrame()
+    ##cv.imshow("title", frame)
+    #print("test")
+    #frame = vc.getFrame(vidCap)
+    print("STARTING IMTESTSHOW")
+    #print(params.showTracker)
+    #testImshow(frame, params)
+    w,x,y,z = cu.update(params)
+    
     if cv.waitKey(1) == ord('q'):  
             break
 
