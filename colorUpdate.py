@@ -60,6 +60,14 @@ class colorTrackingParams:
     
 
 def setHook(params, x, y, function):
+    """Function used to set a hook with an x and y coordinate.
+
+    Args:
+        params (_type_): _description_
+        x (_type_): _description_
+        y (_type_): _description_
+        function (_type_): _description_
+    """
     params.hooks[(x,y)] = function
 
 
