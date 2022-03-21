@@ -86,9 +86,11 @@ def nothing():
     pass
 
 def updateOptions():
+    if cv.getTrackbarPos("red", "Options") != 0:
+        pass
     pass
 
 def enableOptions(params):
     params.showOptions = True
     params.optionsPanel = cv.namedWindow("Options", cv.WINDOW_NORMAL)
-    cv.createTrackbar("Hue", "Options", 0, 180, nothing)
+    cv.createTrackbar("red", "Options", 0, 180, nothing)
