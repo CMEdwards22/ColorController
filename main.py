@@ -1,10 +1,10 @@
-from cv2 import imshow
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
 import colorUpdate as cu
 import tkinter as tk
+import numpy as np
 
 def main1():
     print("Test main")
@@ -114,7 +114,7 @@ def main7broke():
 #def quitAll():
 #    root.protocol('WM_DELETE_WINDOW', quitAll)
 
-def main():
+def main8():
     def quitAll():
         print("quitting all...")
         root.destroy()
@@ -140,7 +140,29 @@ def main():
         #    root.destroy()
         #    break
 
+def nothing(x):
+    pass
     
+def main():
+    params = cu.colorTrackingParams()
+    #cu.enableOptions(params)
+    img = np.zeros((1,1,3), np.uint8)
+    x = cv.namedWindow("Options", cv.WINDOW_NORMAL)
+    cv.createTrackbar("Hue", "Options", 0, 180, nothing)
+    while True:
+        #imshow("Options", img)
+        cv.imshow(x)
+        if cv.waitKey(1) == ord('q'):
+            break
+
+def main10():
+    params = cu.colorTrackingParams()
+    cu.enableOptions(params)
+    while True:
+        x,y,z,w = cu.update(params)
+        if cv.waitKey(1) == ord("q"):
+            break
+
 
 
 cv.destroyAllWindows()
@@ -149,4 +171,4 @@ cv.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    main()
+    main10()

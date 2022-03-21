@@ -3,6 +3,7 @@ import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
+import numpy as np
 
 
 class colorTrackingParams:
@@ -30,7 +31,7 @@ class colorTrackingParams:
     showMask (bool): if the color mask should be shown. Defaults to False.
     trackerTitle (String): the title name of the color tracker window. Defaults to "Tracker"
     maskTitle (String): the title of the name of the color mask window. Defaults to "Mask"
-    showOptions (bool): if options gui should be displayed. Defualts to True
+    showOptions (bool): if options gui should be displayed. Defualts to False.
     """
     def __init__(self):
         self.vidCap = vc.getVideoCapture()
@@ -54,11 +55,16 @@ class colorTrackingParams:
         self.showMask = False
         self.trackerTitle = "Tracker"
         self.maskTitle = "Mask"
-        self.showOptions = True
+        self.showOptions = False
+        self.optionsPanel = None
     
 
-
 def update(params):
+    if params.showOptions:
+        print("Test, placeholder")
+        img = np.zeros((1,1,3), np.uint8)
+        cv.imshow(params.optionsPanel, img)
+
     hsvFrame = vc.hsvFrame(params.vidCap)
     frame = vc.getFrame(params.vidCap)
     mask = cm.getMask(hsvFrame, params.red, params.green, params.blue, hOffset=params.hOffset, sOffset=params.sOffset, vOffset=params.vOffset, mt= params.mt, mtKernel= params.mtKernel, itera= params.itera)
@@ -73,3 +79,16 @@ def destroy():
     """Wrapper function to close all openCV windows
     """
     cv.destroyAllWindows()
+
+def nothing():
+    """Empty Function required for createTrackbar
+    """
+    pass
+
+def updateOptions():
+    pass
+
+def enableOptions(params):
+    params.showOptions = True
+    params.optionsPanel = cv.namedWindow("Options", cv.WINDOW_NORMAL)
+    cv.createTrackbar("Hue", "Options", 0, 180, nothing)
