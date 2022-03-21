@@ -28,8 +28,9 @@ class colorTrackingParams:
     circle_blue (int): blue RGB/BGR color value for drawn circle. Defaults to 255.
     showTracker (bool): if the frame and tracker should be shown. Defaults to True.
     showMask (bool): if the color mask should be shown. Defaults to False.
-    trackerTitle (String): the title name of the color tracker window
-    maskTitle (String): the title of the name of the color mask window
+    trackerTitle (String): the title name of the color tracker window. Defaults to "Tracker"
+    maskTitle (String): the title of the name of the color mask window. Defaults to "Mask"
+    showOptions (bool): if options gui should be displayed. Defualts to True
     """
     def __init__(self):
         self.vidCap = vc.getVideoCapture()
@@ -53,6 +54,7 @@ class colorTrackingParams:
         self.showMask = False
         self.trackerTitle = "Tracker"
         self.maskTitle = "Mask"
+        self.showOptions = True
     
 
 
