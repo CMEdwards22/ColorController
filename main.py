@@ -1,4 +1,4 @@
-from cv2 import imshow
+from cv2 import destroyWindow, imshow
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
@@ -89,25 +89,18 @@ def main6():
         if cv.waitKey(1) == ord('q'):  
             break
     
-def main7broke():
+def main7GuiFixTest():
     params = cu.colorTrackingParams()
+    params.showMask = False
     #params.showTracker = False
-    #params.itera = 6
-
-    # all gui stuff --
-    root = tk.Tk()
-    root.title("Red Color tracked GUI")
-    drawing = tk.Canvas(root, bg='white', height=720, width=1280)
-    drawing.pack()
-    # --
+    params.maxArea = 30000
+    params.itera = 6
+    params.trackerTitle = "Test tracker title"
+    params.maskTitle = "Test mask title"
     while True:
-        x,y,size,blobCount = cu.update(params)
-        if blobCount > 0:
-            # Used to draw oval into gui
-            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
-        # used to update gui
-        root.update()
-        if cv.waitKey(0) == ord('q'):
+        x, y, size, blobCount = cu.update(params)
+        if cv.waitKey(1) == ord('q'):
+            #cv.destroyAllWindows()  
             break
 
 
@@ -123,7 +116,7 @@ def main():
     params.itera = 6
 
     root = tk.Tk()
-    root.protocol('WM_DELETE_WINDOW', quitAll)
+    #root.protocol('WM_DELETE_WINDOW', quitAll)
     root.title("Red color draw test")
     drawing = tk.Canvas(root, bg='white', height=720, width= 1280)
     drawing.pack()
@@ -136,9 +129,9 @@ def main():
             drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="red", outline="")
         
         root.update()
-        #if cv.waitKey(1) == ord('q'):
-        #    root.destroy()
-        #    break
+        if cv.waitKey(1) == ord('q'):
+            root.destroy()
+            break
 
     
 
@@ -150,3 +143,4 @@ cv.destroyAllWindows()
 
 if __name__ == "__main__":
     main()
+    #main7GuiFixTest()

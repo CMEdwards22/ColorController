@@ -117,6 +117,8 @@ def update(params):
     if params.showMask:
         cv.imshow(params.maskTitle, mask)
 
+    # Implementation of close button
+
     return x,y,size,blobCount
 
 
