@@ -45,7 +45,7 @@ class colorTrackingParams:
         self.mtKernel = 7
         self.itera = 1
         self.minArea = 0
-        self.maxArea = 10000
+        self.maxArea = 100000
         self.simple = True
         self.debugMode = False
         self.circle_red = 0

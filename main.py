@@ -134,6 +134,63 @@ def main():
             break
 
     
+def sample():
+    params = cu.colorTrackingParams()
+    params.itera = 4
+    params.showMask = True
+    params.red = 0
+    params.blue = 255
+    params.green = 0
+    params.debugMode = True
+    params.maxArea = 10000000
+    while True:
+        x,y,size,count = cu.update(params)
+
+        if cv.waitKey(1) == ord('q'):
+            break
+
+
+def isLeft():
+    print("Left")
+
+def isRight():
+    print("Right")
+
+def demo():
+    params = cu.colorTrackingParams()
+    params.itera = 3
+
+    # Selecting color to detect
+    params.red = 0
+    params.blue = 255
+    params.green = 0
+
+    # set hooks
+    cu.setRangeHook(params, 0, 0, 320, 480, isLeft)
+    cu.setRangeHook(params, 320, 0, 640, 480, isRight)
+
+    # Stuff for tkinter gui to show of gui connection, not apart of color based controller
+    root = tk.Tk()
+    root.title("Drawing board")
+    drawing = tk.Canvas(root, bg='white', height=480, width= 640)
+    drawing.pack()
+
+    while True:
+        x,y,size,count = cu.update(params)
+
+        if count > 0:
+            # add circle to drawing board based on size and location of blobs
+            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="blue", outline="")
+        
+        # update function for tkinter
+        root.update()
+        
+        if cv.waitKey(1) == ord('q'):
+            root.destroy()
+            break
+
+
+
 
 
 cv.destroyAllWindows()
@@ -142,5 +199,7 @@ cv.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    #sample()
+    demo()
     #main7GuiFixTest()
