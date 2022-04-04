@@ -3,6 +3,7 @@ import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
+import numpy as np
 
 
 class colorTrackingParams:
@@ -57,6 +58,28 @@ class colorTrackingParams:
         self.maskTitle = "Mask"
         self.checkHooks = True
         self.hooks = {}
+        self.optionsPanel = None
+
+    def changeRed(self, val):
+        self.red = val
+
+    def changeGreen(self, val):
+        self.green = val
+
+    def changeBlue(self, val):
+        self.blue = val
+
+    def changeHueOffset(self, val):
+        self.hOffset = val
+
+    def changeSatOffset(self, val):
+        self.sOffset = val
+
+    def changeValOffset(self, val):
+        self.vOffset = val
+
+    def changeItera(self, val):
+        self.itera = val
     
 
 def setHook(params, x, y, function):
@@ -96,6 +119,13 @@ def update(params):
     Returns:
         x, y, size, blobCount: 4 ints with the first blob's x coord, y coord, size, and the total number of blobs
     """
+
+    if params.showOptions:
+        #print("Test, placeholder")
+        img = np.zeros((1,1,3), np.uint8)
+        cv.imshow(params.optionsPanel, img)
+        
+
     # Creates needed frames, hsv frames, and masks
     hsvFrame = vc.hsvFrame(params.vidCap)
     frame = vc.getFrame(params.vidCap)
@@ -128,4 +158,21 @@ def destroy():
     cv.destroyAllWindows()
 
 
-    
+def nothing():
+    """Empty Function required for createTrackbar
+    """
+    pass
+
+def changeRed(val, params):
+    params.red = val
+
+def enableOptions(params):
+    params.showOptions = True
+    params.optionsPanel = cv.namedWindow("Options", cv.WINDOW_NORMAL)
+    cv.createTrackbar("Red", "Options", params.red, 255, params.changeRed)
+    cv.createTrackbar("Green", "Options", params.green, 255, params.changeGreen)
+    cv.createTrackbar("Blue", "Options", params.blue, 255, params.changeBlue)
+    cv.createTrackbar("Hue Offset Value", "Options", params.hOffset, 255, params.changeHueOffset)
+    cv.createTrackbar("Saturation Offset Value", "Options", params.sOffset, 255, params.changeSatOffset)
+    cv.createTrackbar("Value/Lightness Offset Value", "Options", params.vOffset, 255, params.changeValOffset)
+    cv.createTrackbar("Image Postprocessing Iterations", "Options", params.itera, 15, params.changeItera)

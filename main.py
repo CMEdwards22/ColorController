@@ -191,6 +191,17 @@ def demo():
 
 
 
+def main10():
+    params = cu.colorTrackingParams()
+    params.showMask = True
+    cu.enableOptions(params)
+    while True:
+        x,y,z,w = cu.update(params)
+        print(params.red)
+        if cv.waitKey(1) == ord("q"):
+            break
+
+
 
 
 cv.destroyAllWindows()
@@ -201,5 +212,6 @@ cv.destroyAllWindows()
 if __name__ == "__main__":
     #main()
     #sample()
-    demo()
+    #demo()
     #main7GuiFixTest()
+    main10()
