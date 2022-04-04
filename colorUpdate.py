@@ -60,6 +60,7 @@ class colorTrackingParams:
         self.checkHooks = True
         self.hooks = {}
         self.optionsPanel = None
+        self.advanceOptions = False
 
     def changeRed(self, val):
         self.red = val
@@ -135,6 +136,11 @@ def checkHooks(params, x, y):
         hook()
 
 
+def incTupleCoord(tup, val):
+    newY = tup[1] + val
+    return (tup[0], newY)
+
+
 def update(params):
     """Update function that updates all needed data which includes frames, masks, blobdetectors, and imshows.
 
@@ -147,7 +153,21 @@ def update(params):
 
     if params.showOptions:
         #print("Test, placeholder")
-        img = np.zeros((1,1,3), np.uint8)
+        if params.advanceOptions:
+            font = cv.FONT_HERSHEY_SIMPLEX
+            textloc = (0,0)
+            fontScale = 0.5
+            fontColor = (255,255,255)
+            thickness = 1
+            linetype = 2
+            img = np.zeros((200,200,3), np.uint8)
+            redText = "Red: " + str(params.red)
+            blueText = "Blue: " + str(params.blue)
+            combText = redText + "\n" + blueText
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, combText, textloc, font, fontScale, fontColor, thickness, linetype)
+        else:
+            img = np.zeros((1,1,3), np.uint8)
         cv.imshow(params.optionsPanel, img)
         
 
@@ -191,7 +211,7 @@ def nothing():
 def changeRed(val, params):
     params.red = val
 
-def enableOptions(params, advanceOptions=False):
+def enableOptions(params):
     params.showOptions = True
     params.optionsPanel = cv.namedWindow("Options", cv.WINDOW_NORMAL)
     cv.createTrackbar("Red", "Options", params.red, 255, params.changeRed)
@@ -201,7 +221,7 @@ def enableOptions(params, advanceOptions=False):
     cv.createTrackbar("Saturation Offset", "Options", params.sOffset, 255, params.changeSatOffset)
     cv.createTrackbar("Lightness Offset", "Options", params.vOffset, 255, params.changeValOffset)
     cv.createTrackbar("Postprocessing", "Options", params.itera, 15, params.changeItera)
-    if advanceOptions:
+    if params.advanceOptions:
         cv.createTrackbar("Minimum Area", "Options", params.minArea, 1000000, params.changeminArea)
         cv.createTrackbar("Maximum Area", "Options", params.maxArea, 1000000, params.changemaxArea)
         cv.createTrackbar("Circle Red", "Options", params.circle_red, 255, params.changeCircleRed)

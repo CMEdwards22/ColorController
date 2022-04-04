@@ -193,9 +193,9 @@ def demo():
 
 def main10():
     params = cu.colorTrackingParams()
-    params.showMask = True
-    params.showTracker = True
-    params.advanceOptions = False
+    params.showMask = False
+    params.showTracker = False
+    params.advanceOptions = True
     cu.enableOptions(params)
     while True:
         x,y,z,w = cu.update(params)
