@@ -194,10 +194,11 @@ def demo():
 def main10():
     params = cu.colorTrackingParams()
     params.showMask = True
-    cu.enableOptions(params)
+    params.showTracker = True
+    cu.enableOptions(params, advanceOptions=True)
     while True:
         x,y,z,w = cu.update(params)
-        print(params.red)
+        #print(params.red)
         if cv.waitKey(1) == ord("q"):
             break
 

@@ -1,3 +1,4 @@
+from os import truncate
 import cv2 as cv
 import newVideoCapture as vc
 import colorMask as cm
@@ -80,6 +81,30 @@ class colorTrackingParams:
 
     def changeItera(self, val):
         self.itera = val
+
+    def changeminArea(self, val):
+        self.minArea = val
+
+    def changemaxArea(self, val):
+        self.maxArea = val
+
+    def changeCircleRed(self, val):
+        self.circle_red = val
+
+    def changeCircleGreen(self, val):
+        self.circle_green = val
+
+    def changeCircleBlue(self, val):
+        self.circle_blue = val
+
+    def changeDebugMode(self, val):
+        if val == 1:
+            self.debugMode = True
+        else:
+            self.debugMode = False
+
+    def changeKernel(self, val):
+        self.mtKernel = val
     
 
 def setHook(params, x, y, function):
@@ -166,13 +191,22 @@ def nothing():
 def changeRed(val, params):
     params.red = val
 
-def enableOptions(params):
+def enableOptions(params, advanceOptions=False):
     params.showOptions = True
     params.optionsPanel = cv.namedWindow("Options", cv.WINDOW_NORMAL)
     cv.createTrackbar("Red", "Options", params.red, 255, params.changeRed)
     cv.createTrackbar("Green", "Options", params.green, 255, params.changeGreen)
     cv.createTrackbar("Blue", "Options", params.blue, 255, params.changeBlue)
-    cv.createTrackbar("Hue Offset Value", "Options", params.hOffset, 255, params.changeHueOffset)
-    cv.createTrackbar("Saturation Offset Value", "Options", params.sOffset, 255, params.changeSatOffset)
-    cv.createTrackbar("Value/Lightness Offset Value", "Options", params.vOffset, 255, params.changeValOffset)
-    cv.createTrackbar("Image Postprocessing Iterations", "Options", params.itera, 15, params.changeItera)
+    cv.createTrackbar("Hue Offset", "Options", params.hOffset, 255, params.changeHueOffset)
+    cv.createTrackbar("Saturation Offset", "Options", params.sOffset, 255, params.changeSatOffset)
+    cv.createTrackbar("Lightness Offset", "Options", params.vOffset, 255, params.changeValOffset)
+    cv.createTrackbar("Postprocessing", "Options", params.itera, 15, params.changeItera)
+    if advanceOptions:
+        cv.createTrackbar("Minimum Area", "Options", params.minArea, 1000000, params.changeminArea)
+        cv.createTrackbar("Maximum Area", "Options", params.maxArea, 1000000, params.changemaxArea)
+        cv.createTrackbar("Circle Red", "Options", params.circle_red, 255, params.changeCircleRed)
+        cv.createTrackbar("Circle Green", "Options", params.circle_green, 255, params.changeCircleGreen)
+        cv.createTrackbar("Circle Blue", "Options", params.circle_blue, 255, params.changeCircleBlue)
+        cv.createTrackbar("Debug Mode", "Options", 0, 1, params.changeDebugMode)
+        cv.createTrackbar("Kernel Size", "Options", params.mtKernel, 15, params.changeKernel)
+    cv.resizeWindow("Options", 800, 70)
