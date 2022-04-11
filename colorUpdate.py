@@ -34,6 +34,10 @@ class colorTrackingParams:
     maskTitle (String): the title of the name of the color mask window
     checkHooks (bool): if the update function should check for hooks or not. Defaults to True.
     hooks (dict): a dict list of triggers set by setTrigger function. Do not change manually. Defaults to {}.
+    showOptions (bool): if the options panel and dynamic sliders should be shown. Defaults to False.
+    optionsPanel (None): placeholder for the window for the option panels. To set use the enableOptions(params) function. Defualts to None.
+    advanceOptions (bool): if additonal options should be shown in the options panel and options readout. Defualts to False.
+    showOptionVals (bool): if a seperate GUI showing current values for parameter should be shown. Defualts to False.
     """
     def __init__(self):
         self.vidCap = vc.getVideoCapture()
