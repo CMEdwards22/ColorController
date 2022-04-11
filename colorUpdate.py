@@ -59,8 +59,10 @@ class colorTrackingParams:
         self.maskTitle = "Mask"
         self.checkHooks = True
         self.hooks = {}
+        self.showOptions = False
         self.optionsPanel = None
         self.advanceOptions = False
+        self.showOptionVals = False
 
     def changeRed(self, val):
         self.red = val
@@ -153,19 +155,68 @@ def update(params):
 
     if params.showOptions:
         #print("Test, placeholder")
-        if params.advanceOptions:
+        if params.showOptionVals:
             font = cv.FONT_HERSHEY_SIMPLEX
             textloc = (0,0)
             fontScale = 0.5
             fontColor = (255,255,255)
             thickness = 1
             linetype = 2
-            img = np.zeros((200,200,3), np.uint8)
+            img = np.zeros((225,225,3), np.uint8)
+
             redText = "Red: " + str(params.red)
+            greenText = "Green: " + str(params.green)
             blueText = "Blue: " + str(params.blue)
-            combText = redText + "\n" + blueText
+            hueText = "Hue Offset: " + str(params.hOffset)
+            satText = "Saturation Offset: " + str(params.sOffset)
+            lightText = "Lightness Offset: " + str(params.vOffset)
+            if params.mt:
+                ppText = "Postprocessing: " + str(params.itera)
+            else:
+                ppText = "Postprocessing: Disabled"
+
             textloc = incTupleCoord(textloc, 15)
-            cv.putText(img, combText, textloc, font, fontScale, fontColor, thickness, linetype)
+            cv.putText(img, redText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, greenText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, blueText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, hueText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, satText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, lightText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, ppText, textloc, font, fontScale, fontColor, thickness, linetype)
+
+            if params.advanceOptions:
+                minText = "Minimum Area: " + str(params.minArea)
+                maxText = "Maximum Area: " + str(params.maxArea)
+                crText = "Circle Red: " + str(params.circle_red)
+                cgText = "Circle Green: " + str(params.circle_green)
+                cbText = "Circle Blue: " + str(params.circle_blue)
+                if params.debugMode:
+                    debugText = "Debug Mode: Enabled"
+                else:
+                    debugText = "Debug Mode: Disabled"
+                kText = "Kernal Size: " + str(params.mtKernel) + "x" + str(params.mtKernel)
+
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, minText, textloc, font, fontScale, fontColor, thickness, linetype)
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, maxText, textloc, font, fontScale, fontColor, thickness, linetype)
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, crText, textloc, font, fontScale, fontColor, thickness, linetype)
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, cgText, textloc, font, fontScale, fontColor, thickness, linetype)
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, cbText, textloc, font, fontScale, fontColor, thickness, linetype)
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, debugText, textloc, font, fontScale, fontColor, thickness, linetype)
+                textloc = incTupleCoord(textloc, 15)
+                cv.putText(img, kText, textloc, font, fontScale, fontColor, thickness, linetype)
+
         else:
             img = np.zeros((1,1,3), np.uint8)
         cv.imshow(params.optionsPanel, img)

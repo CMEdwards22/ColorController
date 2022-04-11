@@ -196,6 +196,8 @@ def main10():
     params.showMask = False
     params.showTracker = False
     params.advanceOptions = True
+    params.showOptionVals = True
+    #params.mt = False
     cu.enableOptions(params)
     while True:
         x,y,z,w = cu.update(params)
