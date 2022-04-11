@@ -249,7 +249,6 @@ def update(params):
     if params.showMask:
         cv.imshow(params.maskTitle, mask)
 
-    # Implementation of close button
 
     return x,y,size,blobCount
 
@@ -260,10 +259,10 @@ def destroy():
     cv.destroyAllWindows()
 
 
-def nothing():
-    """Empty Function required for createTrackbar
-    """
-    pass
+#def nothing():
+#    """Empty Function required for createTrackbar
+#    """
+#    pass
 
 def changeRed(val, params):
     params.red = val

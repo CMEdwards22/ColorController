@@ -1,4 +1,4 @@
-from cv2 import destroyWindow, imshow
+#from cv2 import destroyWindow, imshow
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
@@ -199,6 +199,10 @@ def main10():
     params.showOptionVals = True
     #params.mt = False
     cu.enableOptions(params)
+
+    cu.setRangeHook(params, 0, 0, 320, 480, isLeft)
+    #cv.rectangle(vc.getFrame(params.vidCap), (0,0), (320, 480), (255, 0, 0)) 
+
     while True:
         x,y,z,w = cu.update(params)
         #print(params.red)
