@@ -24,6 +24,8 @@ def main():
     params.blue = 255
     params.green = 0
 
+    params.vOffset = 244
+
     # Enabling options
     cu.enableOptions(params)
 
@@ -44,7 +46,10 @@ def main():
 
         if count > 0:
             # add circle to drawing board based on size and location of blobs
-            drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="blue", outline="")
+            if params.red > 0:
+                drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="pink", outline="")
+            else:
+                drawing.create_oval(x - (size / 2), y - (size / 2), x + (size / 2), y + (size / 2), fill="blue", outline="")
         
         # update function for tkinter
         root.update()
