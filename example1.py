@@ -30,10 +30,10 @@ def main():
 
 
     # Setting hooks
-    cu.setRangeHook(params, 0, 0, 320, 240, isTopLeft)
-    cu.setRangeHook(params, 320, 0, 640, 240, isTopRight)
-    cu.setRangeHook(params, 0, 240, 320, 480, isBottomLeft)
-    cu.setRangeHook(params, 320, 240, 640, 480, isBottomRight)
+    cu.setRangeHook(params, 0, 0, 640, 360, isTopLeft)
+    cu.setRangeHook(params, 640, 0, 1280, 360, isTopRight)
+    cu.setRangeHook(params, 0, 360, 640, 480, isBottomLeft)
+    cu.setRangeHook(params, 640, 360, 1280, 480, isBottomRight)
 
 
     while True:
