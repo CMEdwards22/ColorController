@@ -65,7 +65,7 @@ class colorTrackingParams:
         self.hooks = {}
         self.showOptions = False
         self.optionsPanel = None
-        self.advanceOptions = False
+        self.advanceOptions = True
         self.showOptionVals = False
 
     def changeRed(self, val):
