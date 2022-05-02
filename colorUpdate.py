@@ -1,8 +1,10 @@
+from os import truncate
 import cv2 as cv
 import newVideoCapture as vc
 import colorMask as cm
 import cv2 as cv
 import colorTracking as ct
+import numpy as np
 
 
 class colorTrackingParams:
@@ -32,6 +34,10 @@ class colorTrackingParams:
     maskTitle (String): the title of the name of the color mask window
     checkHooks (bool): if the update function should check for hooks or not. Defaults to True.
     hooks (dict): a dict list of triggers set by setTrigger function. Do not change manually. Defaults to {}.
+    showOptions (bool): if the options panel and dynamic sliders should be shown. Defaults to False.
+    optionsPanel (None): placeholder for the window for the option panels. To set use the enableOptions(params) function. Defualts to None.
+    advanceOptions (bool): if additonal options should be shown in the options panel and options readout. Defualts to False.
+    showOptionVals (bool): if a seperate GUI showing current values for parameter should be shown. Defualts to False.
     """
     def __init__(self):
         self.vidCap = vc.getVideoCapture()
@@ -57,6 +63,55 @@ class colorTrackingParams:
         self.maskTitle = "Mask"
         self.checkHooks = True
         self.hooks = {}
+        self.showOptions = False
+        self.optionsPanel = None
+        self.advanceOptions = True
+        self.showOptionVals = False
+
+    def changeRed(self, val):
+        self.red = val
+
+    def changeGreen(self, val):
+        self.green = val
+
+    def changeBlue(self, val):
+        self.blue = val
+
+    def changeHueOffset(self, val):
+        self.hOffset = val
+
+    def changeSatOffset(self, val):
+        self.sOffset = val
+
+    def changeValOffset(self, val):
+        self.vOffset = val
+
+    def changeItera(self, val):
+        self.itera = val
+
+    def changeminArea(self, val):
+        self.minArea = val
+
+    def changemaxArea(self, val):
+        self.maxArea = val
+
+    def changeCircleRed(self, val):
+        self.circle_red = val
+
+    def changeCircleGreen(self, val):
+        self.circle_green = val
+
+    def changeCircleBlue(self, val):
+        self.circle_blue = val
+
+    def changeDebugMode(self, val):
+        if val == 1:
+            self.debugMode = True
+        else:
+            self.debugMode = False
+
+    def changeKernel(self, val):
+        self.mtKernel = val
     
 
 def setHook(params, x, y, function):
@@ -87,6 +142,11 @@ def checkHooks(params, x, y):
         hook()
 
 
+def incTupleCoord(tup, val):
+    newY = tup[1] + val
+    return (tup[0], newY)
+
+
 def update(params):
     """Update function that updates all needed data which includes frames, masks, blobdetectors, and imshows.
 
@@ -96,6 +156,78 @@ def update(params):
     Returns:
         x, y, size, blobCount: 4 ints with the first blob's x coord, y coord, size, and the total number of blobs
     """
+
+
+    if params.showOptionVals:
+        font = cv.FONT_HERSHEY_SIMPLEX
+        textloc = (0,0)
+        fontScale = 0.5
+        fontColor = (255,255,255)
+        thickness = 1
+        linetype = 2
+        img = np.zeros((225,225,3), np.uint8)
+
+        redText = "Red: " + str(params.red)
+        greenText = "Green: " + str(params.green)
+        blueText = "Blue: " + str(params.blue)
+        hueText = "Hue Offset: " + str(params.hOffset)
+        satText = "Saturation Offset: " + str(params.sOffset)
+        lightText = "Lightness Offset: " + str(params.vOffset)
+        if params.mt:
+            ppText = "Postprocessing: " + str(params.itera)
+        else:
+            ppText = "Postprocessing: Disabled"
+
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, redText, textloc, font, fontScale, fontColor, thickness, linetype)
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, greenText, textloc, font, fontScale, fontColor, thickness, linetype)
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, blueText, textloc, font, fontScale, fontColor, thickness, linetype)
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, hueText, textloc, font, fontScale, fontColor, thickness, linetype)
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, satText, textloc, font, fontScale, fontColor, thickness, linetype)
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, lightText, textloc, font, fontScale, fontColor, thickness, linetype)
+        textloc = incTupleCoord(textloc, 15)
+        cv.putText(img, ppText, textloc, font, fontScale, fontColor, thickness, linetype)
+
+        if params.advanceOptions:
+            minText = "Minimum Area: " + str(params.minArea)
+            maxText = "Maximum Area: " + str(params.maxArea)
+            crText = "Circle Red: " + str(params.circle_red)
+            cgText = "Circle Green: " + str(params.circle_green)
+            cbText = "Circle Blue: " + str(params.circle_blue)
+            if params.debugMode:
+                debugText = "Debug Mode: Enabled"
+            else:
+                debugText = "Debug Mode: Disabled"
+            kText = "Kernal Size: " + str(params.mtKernel) + "x" + str(params.mtKernel)
+
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, minText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, maxText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, crText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, cgText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, cbText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, debugText, textloc, font, fontScale, fontColor, thickness, linetype)
+            textloc = incTupleCoord(textloc, 15)
+            cv.putText(img, kText, textloc, font, fontScale, fontColor, thickness, linetype)
+
+    if params.showOptions:
+        if not params.showOptionVals:
+            img = np.zeros((1,1,3), np.uint8)
+        cv.imshow(params.optionsPanel, img)
+    elif params.showOptionVals:
+        cv.imshow("Option Values", img)
+        
+
     # Creates needed frames, hsv frames, and masks
     hsvFrame = vc.hsvFrame(params.vidCap)
     frame = vc.getFrame(params.vidCap)
@@ -117,7 +249,6 @@ def update(params):
     if params.showMask:
         cv.imshow(params.maskTitle, mask)
 
-    # Implementation of close button
 
     return x,y,size,blobCount
 
@@ -128,4 +259,30 @@ def destroy():
     cv.destroyAllWindows()
 
 
-    
+#def nothing():
+#    """Empty Function required for createTrackbar
+#    """
+#    pass
+
+def changeRed(val, params):
+    params.red = val
+
+def enableOptions(params):
+    params.showOptions = True
+    params.optionsPanel = cv.namedWindow("Options", cv.WINDOW_NORMAL)
+    cv.createTrackbar("Red", "Options", params.red, 255, params.changeRed)
+    cv.createTrackbar("Green", "Options", params.green, 255, params.changeGreen)
+    cv.createTrackbar("Blue", "Options", params.blue, 255, params.changeBlue)
+    cv.createTrackbar("Hue Offset", "Options", params.hOffset, 255, params.changeHueOffset)
+    cv.createTrackbar("Saturation Offset", "Options", params.sOffset, 255, params.changeSatOffset)
+    cv.createTrackbar("Lightness Offset", "Options", params.vOffset, 255, params.changeValOffset)
+    cv.createTrackbar("Postprocessing", "Options", params.itera, 15, params.changeItera)
+    if params.advanceOptions:
+        cv.createTrackbar("Minimum Area", "Options", params.minArea, 1000000, params.changeminArea)
+        cv.createTrackbar("Maximum Area", "Options", params.maxArea, 1000000, params.changemaxArea)
+        cv.createTrackbar("Circle Red", "Options", params.circle_red, 255, params.changeCircleRed)
+        cv.createTrackbar("Circle Green", "Options", params.circle_green, 255, params.changeCircleGreen)
+        cv.createTrackbar("Circle Blue", "Options", params.circle_blue, 255, params.changeCircleBlue)
+        cv.createTrackbar("Debug Mode", "Options", 0, 1, params.changeDebugMode)
+        cv.createTrackbar("Kernel Size", "Options", params.mtKernel, 15, params.changeKernel)
+    cv.resizeWindow("Options", 800, 70)
